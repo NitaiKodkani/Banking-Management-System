@@ -11,10 +11,44 @@ def finish_reg():
     gender = temp_gender.get()
     password = temp_password.get()
     all_accounts = os.listdir()
+    genderlist = ["male", "female", "other"]
 
     if name == "" or age == "" or gender == "" or password == "":
         notif.config(fg="red", text="All fields required * ")
         return
+    if ord(name[0]) < 65 or ord(name[0]) > 122:
+        notif.config(fg="red", text="Only letters allowed in Name * ")
+        return
+
+    try:
+        if int(age) <= 0:
+            notif.config(fg="red", text="Enter valid age * ")
+            return
+
+    except ValueError:
+        notif.config(fg="red", text="Enter only numbers in age field")
+        return
+
+    except EOFError:
+        notif.config(fg="red", text="All fields required")
+        return
+
+    if gender.lower() not in genderlist:
+        notif.config(fg="red", text="Enter valid gender * ")
+        return
+
+    # try:
+    #     if int(temp_name):
+    #         name = temp_name.get()
+    #         notif.config(fg="green", text="Account name is valid")
+    #
+    # except TypeError:
+    #     notif.config(fg="green", text="Letters only please")
+    #     return
+    #
+    # except EOFError:
+    #     notif.config(fg="green", text="All fields required")
+    #     return
 
     for name_check in all_accounts:
         if name == name_check:
@@ -60,6 +94,8 @@ def register():
     notif.grid(row=6, sticky=N, pady=10)
 
     # Entries
+    # while True:
+
     Entry(register_screen, textvariable=temp_name).grid(row=1, column=0)
     Entry(register_screen, textvariable=temp_age).grid(row=2, column=0)
     Entry(register_screen, textvariable=temp_gender).grid(row=3, column=0)
@@ -81,6 +117,7 @@ def login_session():
             file_data = file.read()
             file_data = file_data.split('\n')
             password = file_data[1]
+
             # Account Dashboard
             if login_password == password:
                 login_screen.destroy()
@@ -135,13 +172,23 @@ def deposit():
 
 
 def finish_deposit():
+
     if amount.get() == "":
         deposit_notif.config(text='Amount is required!', fg="red")
         return
+    try:
+        if float(amount.get()) <= 0:
+            deposit_notif.config(fg="red", text="Enter positive amount * ")
+            return
 
-    if float(amount.get()) <= 0:
-        deposit_notif.config(text='Negative currency is not accepted', fg='red')
+    except ValueError:
+        deposit_notif.config(fg="red", text="Enter only numbers")
         return
+
+    except EOFError:
+        deposit_notif.config(fg="red", text="All fields required")
+        return
+
 
     file = open(login_name, 'r+')
     file_data = file.read()
@@ -190,8 +237,18 @@ def finish_withdraw():
     if withdraw_amount.get() == "":
         withdraw_notif.config(text='Amount is required!', fg="red")
         return
-    if float(withdraw_amount.get()) <= 0:
-        withdraw_notif.config(text='Negative currency is not accepted', fg='red')
+
+    try:
+        if float(withdraw_amount.get()) <= 0:
+            withdraw_notif.config(fg="red", text="Enter positive amount * ")
+            return
+
+    except ValueError:
+        withdraw_notif.config(fg="red", text="Enter only numbers")
+        return
+
+    except EOFError:
+        withdraw_notif.config(fg="red", text="All fields required")
         return
 
     file = open(login_name, 'r+')
