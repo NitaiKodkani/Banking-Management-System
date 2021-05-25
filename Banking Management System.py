@@ -37,19 +37,6 @@ def finish_reg():
         notif.config(fg="red", text="Enter valid gender * ")
         return
 
-    # try:
-    #     if int(temp_name):
-    #         name = temp_name.get()
-    #         notif.config(fg="green", text="Account name is valid")
-    #
-    # except TypeError:
-    #     notif.config(fg="green", text="Letters only please")
-    #     return
-    #
-    # except EOFError:
-    #     notif.config(fg="green", text="All fields required")
-    #     return
-
     for name_check in all_accounts:
         if name == name_check:
             notif.config(fg="red", text="Account already exists")
@@ -94,7 +81,6 @@ def register():
     notif.grid(row=6, sticky=N, pady=10)
 
     # Entries
-    # while True:
 
     Entry(register_screen, textvariable=temp_name).grid(row=1, column=0)
     Entry(register_screen, textvariable=temp_age).grid(row=2, column=0)
